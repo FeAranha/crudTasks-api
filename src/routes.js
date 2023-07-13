@@ -9,6 +9,7 @@ export const routes = [
     method: 'GET',
     path: buildRoutePath('/tasks'),
     handler: (req, res) => {
+      console.log(req.query)
       const tasks = database.select('tasks')
 
       return res.end(JSON.stringify(tasks))
@@ -29,6 +30,21 @@ export const routes = [
     database.insert('tasks', task)
 
     return res.writeHead(201).end()
+    }
+  },
+    {
+    method: 'PUT',
+    path: buildRoutePath('/tasks/:id'),
+    handler: (req, res) => {
+      const { id } = req.params
+      const { title, desc } = req.body
+
+      database.update('tasks', id, {
+        title,
+        desc,
+      })
+
+      return res.writeHead(204).end()
     }
   },
     {
