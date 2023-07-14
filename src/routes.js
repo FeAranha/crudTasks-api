@@ -46,14 +46,19 @@ export const routes = [
       const { id } = req.params
       const { title, description } = req.body
 
-      database.update('tasks', id, {
-        created_at: //comoFazer
-        title,
-        description,
-        completed_at:
-        updated_at: new Date().toISOString(),
+      const dataTask = database.select('tasks', { id })[0]
 
-      })
+      if (!dataTask){
+        return res.writeHead(404).end()
+      }
+      const updatedTask = {
+        ...dataTask,
+        title: title || dataTask.title,
+        description: description || dataTask.description,
+        updated_at: new Date().toISOString(),
+      }
+
+      database.update('tasks', id, updatedTask)
 
       return res.writeHead(204).end()
     }
