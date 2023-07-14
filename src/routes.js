@@ -13,7 +13,7 @@ export const routes = [
 
       const tasks = database.select('tasks', search ? {
         title: search,
-        desc: search,
+        description: search,
       } : null)
     
       return res.end(JSON.stringify(tasks))
@@ -23,12 +23,15 @@ export const routes = [
     method: 'POST',
     path: buildRoutePath('/tasks'),
     handler: (req, res) => {
-      const { title, desc } = req.body
+      const { title, description } = req.body
 
       const task = {
         id: randomUUID(),
+        created_at: new Date().toISOString(),
         title,
-        desc,
+        description,
+        completed_at: null,
+        updated_at: new Date().toISOString(),
       }
 
     database.insert('tasks', task)
@@ -41,11 +44,15 @@ export const routes = [
     path: buildRoutePath('/tasks/:id'),
     handler: (req, res) => {
       const { id } = req.params
-      const { title, desc } = req.body
+      const { title, description } = req.body
 
       database.update('tasks', id, {
+        created_at: //comoFazer
         title,
-        desc,
+        description,
+        completed_at:
+        updated_at: new Date().toISOString(),
+
       })
 
       return res.writeHead(204).end()
